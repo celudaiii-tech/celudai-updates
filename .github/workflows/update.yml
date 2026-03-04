@@ -15,8 +15,9 @@ jobs:
       - name: Extract release info
         run: |
           TAG="${{ github.event.release.tag_name }}"
-          APP_NAME=$(echo $TAG | cut -d'_v' -f1)
-          VERSION=$(echo $TAG | cut -d'_v' -f2)
+
+          APP_NAME=$(echo "$TAG" | sed -E 's/_v[0-9]+$//')
+          VERSION=$(echo "$TAG" | sed -E 's/^.*_v([0-9]+)$/\1/')
 
           DOWNLOAD_URL="${{ github.event.release.assets[0].browser_download_url }}"
 
