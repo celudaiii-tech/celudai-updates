@@ -11,6 +11,11 @@
       "package": "com.twotestapp.app",
       "version": 3,
       "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/twotestapp_v3/Epix_Play_3.7.6_final.apk"
+    },
+    {
+      "name": "NETFLY",
+      "version": 1,
+      "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/NETFLY_v1/netfly.apk"
     }
   ]
 }
