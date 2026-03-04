@@ -13,18 +13,30 @@ JSON_FILE = "update.json"
 if not os.path.exists(APK_FOLDER):
     os.makedirs(APK_FOLDER)
 
-# Cargar JSON existente o crear vacío
+# Cargar JSON existente o crear estructura inicial
 if os.path.exists(JSON_FILE):
     with open(JSON_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
 else:
-    data = {"apps": []}
+    data = {
+        "activation_password": "Celudai#2026!",
+        "apps": []
+    }
+
+# Si el JSON viejo no tenía contraseña, la agregamos
+if "activation_password" not in data:
+    data["activation_password"] = "Celudai#2026!"
 
 # ---------------- Funciones principales ----------------
 def save_json(push_to_github=False):
+    # Guardar contraseña actual desde la interfaz
+    data["activation_password"] = password_entry.get()
+
     with open(JSON_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
+
     refresh_listbox()
+
     if push_to_github:
         push_to_github_repo()
 
@@ -63,12 +75,13 @@ def add_app():
             "added": datetime.now().strftime("%Y-%m-%d %H:%M")
         })
 
-    save_json()
+    save_json(push_to_github=True)
 
 def delete_app():
     selection = listbox.curselection()
     if not selection:
         return
+
     index = selection[0]
     title = data["apps"][index]["name"]
 
@@ -76,15 +89,16 @@ def delete_app():
         apk_file = os.path.join(APK_FOLDER, f"{title}.apk")
         if os.path.exists(apk_file):
             os.remove(apk_file)
+
         data["apps"].pop(index)
-        save_json()
+        save_json(push_to_github=True)
 
 def refresh_listbox():
     listbox.delete(0, END)
     for app in data["apps"]:
         listbox.insert(END, f"{app['name']} (v{app['version']})")
 
-# ---------------- PUSH A GITHUB (SIN TOKEN MANUAL) ----------------
+# ---------------- PUSH AUTOMÁTICO ----------------
 def push_to_github_repo():
     try:
         subprocess.run(["git", "config", "user.name", "CeludaiUpdater"], check=True)
@@ -94,29 +108,38 @@ def push_to_github_repo():
 
         diff = subprocess.run(["git", "diff", "--cached", "--quiet"])
         if diff.returncode != 0:
-            subprocess.run(["git", "commit", "-m", "Actualización automática de apps"], check=True)
+            subprocess.run(["git", "commit", "-m", "Actualización automática"], check=True)
             subprocess.run(["git", "push", "origin", "main"], check=True)
-            messagebox.showinfo("GitHub", "Cambios subidos a GitHub correctamente")
+            messagebox.showinfo("Sistema", "Cambios guardados correctamente")
         else:
-            messagebox.showinfo("GitHub", "No hay cambios para subir")
+            messagebox.showinfo("Sistema", "No hay cambios para guardar")
 
     except subprocess.CalledProcessError as e:
-        messagebox.showerror("GitHub", f"Error al hacer push:\n{e}")
+        messagebox.showerror("Error", f"No se pudo guardar:\n{e}")
 
 # ---------------- GUI ----------------
 root = Tk()
 root.title("Celudai Updater Admin")
-root.geometry("500x450")
+root.geometry("520x520")
+
+# 🔐 CONTRASEÑA DE ACTIVACIÓN
+Label(root, text="Contraseña de activación:").pack(pady=(10, 0))
+
+password_entry = Entry(root, width=50)
+password_entry.pack(pady=5)
+password_entry.insert(0, data["activation_password"])
 
 Label(root, text="Título administrativo:").pack(pady=5)
+
 entry_title = Entry(root, width=50)
 entry_title.pack(pady=5)
 
 Button(root, text="Agregar / Actualizar APK", command=add_app).pack(pady=5)
 Button(root, text="Eliminar app", command=delete_app).pack(pady=5)
-Button(root, text="Guardar JSON y push a GitHub", command=lambda: save_json(push_to_github=True)).pack(pady=5)
+Button(root, text="Guardar", command=lambda: save_json(push_to_github=True)).pack(pady=5)
 
 Label(root, text="Apps cargadas:").pack(pady=5)
+
 listbox = Listbox(root, width=70)
 listbox.pack(pady=5, fill="both", expand=True)
 
