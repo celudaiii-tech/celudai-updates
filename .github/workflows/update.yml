@@ -21,7 +21,6 @@ jobs:
       - name: Extract release info and update JSON
         run: |
           TAG="${{ github.event.release.tag_name }}"
-
           APP_NAME=$(echo "$TAG" | sed -E 's/_v[0-9]+$//')
           VERSION=$(echo "$TAG" | sed -E 's/^.*_v([0-9]+)$/\1/')
           DOWNLOAD_URL="${{ github.event.release.assets[0].browser_download_url }}"
@@ -40,14 +39,12 @@ jobs:
              '.apps |= map(select(.name != $name))' \
              update.json > tmp.json && mv tmp.json update.json
 
-          # Agregar versión nueva
+          # Agregar versión nueva sin package
           jq --arg name "$APP_NAME" \
-             --arg package "com.$APP_NAME.app" \
              --arg url "$DOWNLOAD_URL" \
              --argjson version $VERSION \
              '.apps += [{
                name: $name,
-               package: $package,
                version: $version,
                url: $url
              }]' \
@@ -62,6 +59,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Auto update JSON"
+            git commit -m "Auto update JSON v$VERSION"
             git push origin main
           fi
