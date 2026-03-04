@@ -3,13 +3,12 @@ import json
 import shutil
 from datetime import datetime
 from tkinter import Tk, Label, Button, Entry, filedialog, Listbox, END, messagebox
-from apkutils import APK  # pip install apkutils-patch
+from apkutils import APK
 import subprocess
 
 # ---------------- Configuración ----------------
 APK_FOLDER = "apks"
 JSON_FILE = "update.json"
-TOKEN_FILE = "github_token.txt"  # aquí el cliente debe poner su token personal
 
 if not os.path.exists(APK_FOLDER):
     os.makedirs(APK_FOLDER)
@@ -27,7 +26,7 @@ def save_json(push_to_github=False):
         json.dump(data, f, indent=4, ensure_ascii=False)
     refresh_listbox()
     if push_to_github:
-        push_json_to_github()
+        push_to_github_repo()
 
 def add_app():
     apk_path = filedialog.askopenfilename(filetypes=[("APK Files", "*.apk")])
@@ -48,12 +47,14 @@ def add_app():
         return
 
     existing = next((app for app in data["apps"] if app["name"] == title), None)
+
+    shutil.copy(apk_path, os.path.join(APK_FOLDER, f"{title}.apk"))
+
     if existing:
         existing["package"] = package_name
         existing["version"] = version
-        shutil.copy(apk_path, os.path.join(APK_FOLDER, f"{title}.apk"))
+        existing["url"] = f"{APK_FOLDER}/{title}.apk"
     else:
-        shutil.copy(apk_path, os.path.join(APK_FOLDER, f"{title}.apk"))
         data["apps"].append({
             "name": title,
             "package": package_name,
@@ -83,37 +84,24 @@ def refresh_listbox():
     for app in data["apps"]:
         listbox.insert(END, f"{app['name']} (v{app['version']})")
 
-def push_json_to_github():
-    if not os.path.exists(TOKEN_FILE):
-        messagebox.showwarning("GitHub", f"No se encontró {TOKEN_FILE}. No se hará push.")
-        return
-    with open(TOKEN_FILE, "r", encoding="utf-8") as f:
-        token = f.read().strip()
-
+# ---------------- PUSH A GITHUB (SIN TOKEN MANUAL) ----------------
+def push_to_github_repo():
     try:
         subprocess.run(["git", "config", "user.name", "CeludaiUpdater"], check=True)
         subprocess.run(["git", "config", "user.email", "celudai@example.com"], check=True)
-        subprocess.run(["git", "add", JSON_FILE], check=True)
+
+        subprocess.run(["git", "add", "."], check=True)
 
         diff = subprocess.run(["git", "diff", "--cached", "--quiet"])
         if diff.returncode != 0:
             subprocess.run(["git", "commit", "-m", "Actualización automática de apps"], check=True)
-            repo_url = get_remote_url()
-            if repo_url:
-                secure_url = repo_url.replace("https://", f"https://{token}@")
-                subprocess.run(["git", "push", secure_url, "main"], check=True)
-                messagebox.showinfo("GitHub", "JSON actualizado en GitHub correctamente")
-            else:
-                messagebox.showwarning("GitHub", "No se encontró URL remota para push")
-    except subprocess.CalledProcessError as e:
-        messagebox.showerror("GitHub", f"Error al hacer push: {e}")
+            subprocess.run(["git", "push", "origin", "main"], check=True)
+            messagebox.showinfo("GitHub", "Cambios subidos a GitHub correctamente")
+        else:
+            messagebox.showinfo("GitHub", "No hay cambios para subir")
 
-def get_remote_url():
-    try:
-        result = subprocess.run(["git", "remote", "get-url", "origin"], capture_output=True, text=True, check=True)
-        return result.stdout.strip()
-    except subprocess.CalledProcessError:
-        return None
+    except subprocess.CalledProcessError as e:
+        messagebox.showerror("GitHub", f"Error al hacer push:\n{e}")
 
 # ---------------- GUI ----------------
 root = Tk()
