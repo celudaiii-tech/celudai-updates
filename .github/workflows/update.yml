@@ -1,0 +1,44 @@
+name: Auto Update JSON
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Extract release info
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          APP_NAME=$(echo $TAG | cut -d'_v' -f1)
+          VERSION=$(echo $TAG | cut -d'_v' -f2)
+
+          DOWNLOAD_URL="${{ github.event.release.assets[0].browser_download_url }}"
+
+          echo "App: $APP_NAME"
+          echo "Version: $VERSION"
+          echo "URL: $DOWNLOAD_URL"
+
+          echo "{
+            \"apps\": [
+              {
+                \"name\": \"$APP_NAME\",
+                \"package\": \"com.$APP_NAME.app\",
+                \"version\": $VERSION,
+                \"url\": \"$DOWNLOAD_URL\"
+              }
+            ]
+          }" > update.json
+
+      - name: Commit update.json
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add update.json
+          git commit -m "Auto update JSON"
+          git push
