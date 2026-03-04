@@ -2,7 +2,7 @@ name: Auto Update JSON
 
 on:
   release:
-    types: [published]
+    types: [published, deleted]  # ahora también escucha releases eliminados
 
 permissions:
   contents: write
@@ -18,13 +18,15 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Extract release info and update JSON
+      - name: Update JSON based on release event
         run: |
+          EVENT_TYPE="${{ github.event.action }}"
           TAG="${{ github.event.release.tag_name }}"
           APP_NAME=$(echo "$TAG" | sed -E 's/_v[0-9]+$//')
-          VERSION=$(echo "$TAG" | sed -E 's/^.*_v([0-9]+)$/\1/')
-          DOWNLOAD_URL="${{ github.event.release.assets[0].browser_download_url }}"
+          DOWNLOAD_URL="${{ github.event.release.assets[0].browser_download_url || '' }}"
+          VERSION=$(echo "$TAG" | sed -E 's/^.*_v([0-9]+)$/\1/' || 0)
 
+          echo "Evento: $EVENT_TYPE"
           echo "App: $APP_NAME"
           echo "Version: $VERSION"
           echo "URL: $DOWNLOAD_URL"
@@ -34,21 +36,29 @@ jobs:
             echo '{ "apps": [] }' > update.json
           fi
 
-          # Eliminar la app si ya existe
-          jq --arg name "$APP_NAME" \
-             '.apps |= map(select(.name != $name))' \
-             update.json > tmp.json && mv tmp.json update.json
+          if [ "$EVENT_TYPE" = "deleted" ]; then
+            # Eliminar la app del JSON
+            jq --arg name "$APP_NAME" \
+               '.apps |= map(select(.name != $name))' \
+               update.json > tmp.json && mv tmp.json update.json
+            echo "App $APP_NAME eliminada del JSON"
+          else
+            # Eliminar la app si ya existe (reemplazo)
+            jq --arg name "$APP_NAME" \
+               '.apps |= map(select(.name != $name))' \
+               update.json > tmp.json && mv tmp.json update.json
 
-          # Agregar versión nueva sin package
-          jq --arg name "$APP_NAME" \
-             --arg url "$DOWNLOAD_URL" \
-             --argjson version $VERSION \
-             '.apps += [{
-               name: $name,
-               version: $version,
-               url: $url
-             }]' \
-             update.json > tmp.json && mv tmp.json update.json
+            # Agregar versión nueva
+            jq --arg name "$APP_NAME" \
+               --arg url "$DOWNLOAD_URL" \
+               --argjson version $VERSION \
+               '.apps += [{
+                 name: $name,
+                 version: $version,
+                 url: $url
+               }]' \
+               update.json > tmp.json && mv tmp.json update.json
+          fi
 
       - name: Commit update.json
         run: |
@@ -59,6 +69,5 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Auto update JSON v$VERSION"
+            git commit -m "Auto update JSON"
             git push origin main
-          fi
