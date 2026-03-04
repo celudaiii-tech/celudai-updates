@@ -18,10 +18,11 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
+      - name: Set up Java
+        uses: actions/setup-java@v3
         with:
-          sdk-version: '33' # versión mínima que incluya aapt
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Download APK
         run: |
@@ -40,8 +41,28 @@ jobs:
           # Descargar APK temporalmente
           curl -L -o "${APP_NAME}.apk" "$APK_URL"
 
-          # Extraer package usando aapt
-          PACKAGE=$(aapt dump badging "${APP_NAME}.apk" | grep package:\ name | awk -F"'" '{print $2}')
+          # Extraer el package name usando un pequeño script Java
+          cat <<EOF > GetPackage.java
+          import net.dongliu.apk.parser.ApkFile;
+          import java.io.File;
+
+          public class GetPackage {
+              public static void main(String[] args) throws Exception {
+                  File apk = new File(args[0]);
+                  try (ApkFile apkFile = new ApkFile(apk)) {
+                      System.out.println(apkFile.getApkMeta().getPackageName());
+                  }
+              }
+          }
+          EOF
+
+          # Descargar dependencia ApkParser
+          mkdir -p libs
+          curl -L -o libs/apk-parser.jar https://github.com/hsiafan/apk-parser/releases/download/v2.6.10/apk-parser-2.6.10.jar
+
+          # Compilar y ejecutar el script
+          javac -cp libs/apk-parser.jar GetPackage.java
+          PACKAGE=$(java -cp ".:libs/apk-parser.jar" GetPackage "${APP_NAME}.apk")
           echo "Package: $PACKAGE"
 
           # Crear JSON si no existe
