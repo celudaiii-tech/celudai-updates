@@ -1,0 +1,18 @@
+{
+    "apps": [
+        {
+            "name": "EPIX PLAY",
+            "package": "com.epixplay.plus",
+            "version": 8,
+            "url": "apks/EPIX PLAY.apk",
+            "added": "2026-03-04 13:45"
+        },
+        {
+            "name": "NETFLY",
+            "package": "xyz.netfly",
+            "version": 6,
+            "url": "apks/NETFLY.apk",
+            "added": "2026-03-04 14:02"
+        }
+    ]
+}
