@@ -1,0 +1,12 @@
+{
+    "activation_password": "1234",
+    "apps": [
+        {
+            "name": "EPIXPLAY",
+            "package": "com.epixplay.plus",
+            "version": 8,
+            "url": "apks/EPIXPLAY.apk",
+            "added": "2026-03-05 12:17"
+        }
+    ]
+}
