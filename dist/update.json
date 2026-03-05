@@ -1,0 +1,12 @@
+{
+    "activation_password": "12345",
+    "apps": [
+        {
+            "name": "NETFLY",
+            "package": "xyz.netfly",
+            "version": 6,
+            "url": "apks/NETFLY.apk",
+            "added": "2026-03-05 12:18"
+        }
+    ]
+}
