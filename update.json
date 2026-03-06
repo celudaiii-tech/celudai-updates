@@ -1,11 +1,4 @@
 {
-    "apps": [
-        {
-            "name": "Epix_Play_3.7.6_final",
-            "package": "Epix_Play_3.7.6_final",
-            "version": "1.0",
-            "url": "https://raw.githubusercontent.com/celudaiii-tech/celudai-updates/main/apks/Epix_Play_3.7.6_final.apk"
-        }
-    ],
+    "apps": [],
     "activation_password": "1234567"
 }
