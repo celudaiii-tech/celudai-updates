@@ -1,31 +1,4 @@
 {
-<<<<<<< HEAD
-    "activation_password": "1234",
-    "apps": [
-        {
-=======
-    "apps": [
-        {
-            "name": "EPIXPLAY",
-            "package": "com.epixplay.plus",
-            "version": 8,
-            "url": "apks/EPIXPLAY.apk",
-            "added": "2026-03-04 15:45"
-        },
-        {
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-            "name": "NETFLY",
-            "package": "xyz.netfly",
-            "version": 6,
-            "url": "apks/NETFLY.apk",
-<<<<<<< HEAD
-            "added": "2026-03-05 16:54"
-        }
-    ]
-=======
-            "added": "2026-03-05 15:12"
-        }
-    ],
-    "activation_password": "12"
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
+    "activation_password": "Celudai#2026",
+    "apps": []
 }
