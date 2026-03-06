@@ -5,7 +5,7 @@ import subprocess
 from datetime import datetime
 from tkinter import *
 from tkinter import filedialog, messagebox
-from apkutils2 import APK
+from androguard.core.apk import APK
 
 # ---------------- CONFIG ----------------
 
@@ -34,7 +34,6 @@ def cargar_json():
         "apps": []
     }
 
-
 data = cargar_json()
 
 # ---------------- LEER APK ----------------
@@ -45,8 +44,8 @@ def leer_apk(apk_path):
 
         apk = APK(apk_path)
 
-        package = apk.package_name
-        version = apk.version_code
+        package = apk.get_package()
+        version = apk.get_androidversion_code()
 
         if not package or not version:
             raise Exception("No se pudo detectar package o version")
@@ -66,7 +65,6 @@ def git_pull():
     except subprocess.CalledProcessError as e:
         messagebox.showerror("Git", f"Error haciendo pull\n{str(e)}")
 
-
 def git_push():
 
     try:
@@ -84,7 +82,6 @@ def git_push():
 
     except subprocess.CalledProcessError:
         pass
-
 
 # ---------------- GUARDAR ----------------
 
@@ -104,7 +101,6 @@ def guardar():
     except Exception as e:
 
         messagebox.showerror("Error", str(e))
-
 
 # ---------------- ACTUALIZAR ----------------
 
@@ -127,7 +123,6 @@ def actualizar():
     except Exception as e:
 
         messagebox.showerror("Error", str(e))
-
 
 # ---------------- AGREGAR APK ----------------
 
@@ -175,7 +170,6 @@ def agregar():
 
     refresh_list()
 
-
 # ---------------- ELIMINAR ----------------
 
 def eliminar():
@@ -207,7 +201,6 @@ def eliminar():
 
     refresh_list()
 
-
 # ---------------- LISTA ----------------
 
 def refresh_list():
@@ -220,7 +213,6 @@ def refresh_list():
             END,
             f"{app['name']} | {app['package']} | v{app['version']}"
         )
-
 
 # ---------------- GUI ----------------
 
