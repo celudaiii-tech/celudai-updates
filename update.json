@@ -1,4 +1,12 @@
 {
-    "activation_password": "Celudai#2026",
-    "apps": []
+    "activation_password": "Celudai#2026!",
+    "apps": [
+        {
+            "name": "Epix_Play_3.7.6_final",
+            "package": "com.epixplay.plus",
+            "version": 8,
+            "url": "apks/Epix_Play_3.7.6_final.apk",
+            "added": "2026-03-06 15:12"
+        }
+    ]
 }
