@@ -12,5 +12,6 @@
             "version": "1.0",
             "url": "https://raw.githubusercontent.com/celudaiii-tech/celudai-updates/main/apks/NETFLY.apk"
         }
-    ]
+    ],
+    "activation_password": "1234"
 }
