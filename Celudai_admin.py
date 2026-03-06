@@ -1,256 +1,159 @@
 import os
 import json
 import shutil
-from datetime import datetime
-from tkinter import Tk, Label, Button, Entry, filedialog, Listbox, END, messagebox
-from apkutils import APK
 import subprocess
+from datetime import datetime
+from tkinter import *
+from tkinter import filedialog, messagebox
+from apkutils2 import APK
+import requests
 
-# ---------------- Configuración ----------------
-APK_FOLDER = "apks"
-JSON_FILE = "update.json"
-<<<<<<< HEAD
-CONFIG_FILE = "config.json"
-=======
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
+# ---------------- CONFIG ----------------
+REPO_LOCAL = r"C:\Users\Diego\Desktop\CeludaiADMIN\repo"  # Carpeta local clonada
+APK_FOLDER = os.path.join(REPO_LOCAL, "apks")
+JSON_FILE = os.path.join(REPO_LOCAL, "update.json")
+REMOTE_JSON_URL = "https://raw.githubusercontent.com/celudaiii-tech/celudai-updates/main/update.json"
 
 if not os.path.exists(APK_FOLDER):
     os.makedirs(APK_FOLDER)
 
-<<<<<<< HEAD
-# ---------------- Leer configuración ----------------
-if os.path.exists(CONFIG_FILE):
-    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-        config = json.load(f)
-        GITHUB_TOKEN = config["github_token"]
-        REPO = config["repo"]
-else:
-    messagebox.showerror("Error", "No se encontró config.json")
-    exit()
+data = {
+    "activation_password": "Celudai#2026!",
+    "apps": []
+}
 
-# ---------------- Cargar JSON ----------------
-=======
-# Cargar JSON existente o crear estructura inicial
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-if os.path.exists(JSON_FILE):
-    with open(JSON_FILE, "r", encoding="utf-8") as f:
-        data = json.load(f)
-else:
-    data = {
-        "activation_password": "Celudai#2026!",
-        "apps": []
-    }
+# ---------------- LEER APK ----------------
+def leer_apk(apk_path):
+    try:
+        apk = APK(apk_path)
+        manifest = apk.get_manifest()
 
-<<<<<<< HEAD
-=======
-# Si el JSON viejo no tenía contraseña, la agregamos
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-if "activation_password" not in data:
-    data["activation_password"] = "Celudai#2026!"
+        package = getattr(apk, "package", None) or getattr(apk, "get_package", lambda: None)()
+        version = getattr(apk, "version_code", None) or getattr(apk, "versionCode", None)
 
-# ---------------- Funciones principales ----------------
-def save_json(push_to_github=False):
-<<<<<<< HEAD
+        # fallback si apkutils2 no da atributos
+        if not package:
+            package = apk.get_package()
+        if not version:
+            version = apk.version_code
 
-=======
-    # Guardar contraseña actual desde la interfaz
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-    data["activation_password"] = password_entry.get()
+        if not package or not version:
+            raise Exception("No se pudo detectar package o version")
 
-    with open(JSON_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+        return str(package), int(version)
+    except Exception as e:
+        raise Exception(f"No se pudo leer el APK\n{str(e)}")
 
-    refresh_listbox()
+# ---------------- GIT HELPERS ----------------
+def git_commit_push(message):
+    try:
+        subprocess.check_call(["git", "-C", REPO_LOCAL, "add", "."])
+        subprocess.check_call(["git", "-C", REPO_LOCAL, "commit", "-m", message])
+        subprocess.check_call(["git", "-C", REPO_LOCAL, "push"])
+    except subprocess.CalledProcessError as e:
+        messagebox.showerror("Error Git", f"No se pudo hacer commit/push\n{str(e)}")
 
-    if push_to_github:
-        push_to_github_repo()
+# ---------------- GUARDAR ----------------
+def guardar():
+    try:
+        data["activation_password"] = password_entry.get()
+        with open(JSON_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4)
+        git_commit_push("Actualización Celudai - JSON y APKs")
+        messagebox.showinfo("Sistema", "Datos guardados y subidos correctamente")
+    except Exception as e:
+        messagebox.showerror("Error", str(e))
 
-def add_app():
-<<<<<<< HEAD
+# ---------------- ACTUALIZAR ----------------
+def actualizar():
+    try:
+        r = requests.get(REMOTE_JSON_URL)
+        if r.status_code != 200:
+            raise Exception("No se pudo descargar update.json")
+        global data
+        data = r.json()
+        password_entry.delete(0, END)
+        password_entry.insert(0, data["activation_password"])
+        refresh_list()
+        messagebox.showinfo("Sistema", "Datos sincronizados desde GitHub")
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudo actualizar: {str(e)}")
 
-=======
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-    apk_path = filedialog.askopenfilename(filetypes=[("APK Files", "*.apk")])
+# ---------------- AGREGAR APK ----------------
+def agregar():
+    apk_path = filedialog.askopenfilename(filetypes=[("APK", "*.apk")])
     if not apk_path:
         return
-
-    title = entry_title.get().strip()
-<<<<<<< HEAD
-
-=======
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-    if not title:
-        messagebox.showerror("Error", "Ingresa un título administrativo")
-        return
-
     try:
-        apk_obj = APK(apk_path)
-        package_name = apk_obj.manifest.package_name
-        version = int(apk_obj.manifest.version_code)
-<<<<<<< HEAD
-
-=======
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
+        package, version = leer_apk(apk_path)
     except Exception as e:
-        messagebox.showerror("Error", f"No se pudo leer APK:\n{e}")
+        messagebox.showerror("Error", str(e))
         return
 
-    existing = next((app for app in data["apps"] if app["name"] == title), None)
+    nombre_admin = os.path.basename(apk_path).replace(".apk", "")
+    destino = os.path.join(APK_FOLDER, f"{nombre_admin}.apk")
+    shutil.copy(apk_path, destino)
 
-    shutil.copy(apk_path, os.path.join(APK_FOLDER, f"{title}.apk"))
+    existing = next((a for a in data["apps"] if a["package"] == package), None)
+    url_apk = f"apks/{nombre_admin}.apk"
 
     if existing:
-<<<<<<< HEAD
-
-        existing["package"] = package_name
         existing["version"] = version
-        existing["url"] = f"{APK_FOLDER}/{title}.apk"
-
+        existing["url"] = url_apk
+        existing["name"] = nombre_admin
     else:
-
-=======
-        existing["package"] = package_name
-        existing["version"] = version
-        existing["url"] = f"{APK_FOLDER}/{title}.apk"
-    else:
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
         data["apps"].append({
-            "name": title,
-            "package": package_name,
+            "name": nombre_admin,
+            "package": package,
             "version": version,
-            "url": f"{APK_FOLDER}/{title}.apk",
+            "url": url_apk,
             "added": datetime.now().strftime("%Y-%m-%d %H:%M")
         })
 
-    save_json(push_to_github=True)
+    refresh_list()
 
-def delete_app():
-<<<<<<< HEAD
-
-    selection = listbox.curselection()
-
-=======
-    selection = listbox.curselection()
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-    if not selection:
+# ---------------- ELIMINAR APP ----------------
+def eliminar():
+    seleccion = listbox.curselection()
+    if not seleccion:
+        messagebox.showwarning("Atención", "Selecciona una APP")
         return
+    index = seleccion[0]
+    app = data["apps"][index]
+    nombre = app["name"]
+    confirmar = messagebox.askyesno("Confirmar", f"¿Eliminar {nombre}?")
+    if not confirmar:
+        return
+    apk_path = os.path.join(APK_FOLDER, f"{nombre}.apk")
+    if os.path.exists(apk_path):
+        os.remove(apk_path)
+    data["apps"].pop(index)
+    refresh_list()
 
-    index = selection[0]
-    title = data["apps"][index]["name"]
-
-    if messagebox.askyesno("Confirmar", f"Eliminar {title}?"):
-<<<<<<< HEAD
-
-        apk_file = os.path.join(APK_FOLDER, f"{title}.apk")
-
-=======
-        apk_file = os.path.join(APK_FOLDER, f"{title}.apk")
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-        if os.path.exists(apk_file):
-            os.remove(apk_file)
-
-        data["apps"].pop(index)
-<<<<<<< HEAD
-
-        save_json(push_to_github=True)
-
-def refresh_listbox():
-
+# ---------------- LISTA ----------------
+def refresh_list():
     listbox.delete(0, END)
-
-=======
-        save_json(push_to_github=True)
-
-def refresh_listbox():
-    listbox.delete(0, END)
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
     for app in data["apps"]:
-        listbox.insert(END, f"{app['name']} (v{app['version']})")
-
-# ---------------- PUSH AUTOMÁTICO ----------------
-def push_to_github_repo():
-<<<<<<< HEAD
-
-    try:
-
-        repo_url = f"https://{GITHUB_TOKEN}@github.com/{REPO}.git"
-
-        subprocess.run(["git", "init"], check=True)
-
-        subprocess.run(["git", "remote", "remove", "origin"], stderr=subprocess.DEVNULL)
-
-        subprocess.run(["git", "remote", "add", "origin", repo_url], check=True)
-
-=======
-    try:
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-        subprocess.run(["git", "config", "user.name", "CeludaiUpdater"], check=True)
-        subprocess.run(["git", "config", "user.email", "celudai@example.com"], check=True)
-
-        subprocess.run(["git", "add", "."], check=True)
-
-        diff = subprocess.run(["git", "diff", "--cached", "--quiet"])
-<<<<<<< HEAD
-
-        if diff.returncode != 0:
-
-            subprocess.run(["git", "commit", "-m", "Actualización automática"], check=True)
-            subprocess.run(["git", "branch", "-M", "main"], check=True)
-            subprocess.run(["git", "push", "-u", "origin", "main"], check=True)
-
-            messagebox.showinfo("Sistema", "Cambios subidos a GitHub")
-
-        else:
-
-            messagebox.showinfo("Sistema", "No hay cambios")
-
-    except subprocess.CalledProcessError as e:
-
-        messagebox.showerror("Error", f"No se pudo subir:\n{e}")
-=======
-        if diff.returncode != 0:
-            subprocess.run(["git", "commit", "-m", "Actualización automática"], check=True)
-            subprocess.run(["git", "push", "origin", "main"], check=True)
-            messagebox.showinfo("Sistema", "Cambios guardados correctamente")
-        else:
-            messagebox.showinfo("Sistema", "No hay cambios para guardar")
-
-    except subprocess.CalledProcessError as e:
-        messagebox.showerror("Error", f"No se pudo guardar:\n{e}")
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
+        listbox.insert(END, f"{app['name']} | {app['package']} | v{app['version']}")
 
 # ---------------- GUI ----------------
 root = Tk()
-root.title("Celudai Updater Admin")
-root.geometry("520x520")
+root.title("Celudai Admin")
+root.geometry("540x520")
 
-<<<<<<< HEAD
-=======
-# 🔐 CONTRASEÑA DE ACTIVACIÓN
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
-Label(root, text="Contraseña de activación:").pack(pady=(10, 0))
-
+Label(root, text="Contraseña de activación").pack(pady=5)
 password_entry = Entry(root, width=50)
-password_entry.pack(pady=5)
+password_entry.pack()
 password_entry.insert(0, data["activation_password"])
 
-Label(root, text="Título administrativo:").pack(pady=5)
+Button(root, text="Agregar / Actualizar APK", command=agregar).pack(pady=10)
+Button(root, text="Eliminar APP", command=eliminar).pack(pady=5)
+Button(root, text="Guardar (subir a Git)", command=guardar).pack(pady=10)
+Button(root, text="Actualizar desde nube", command=actualizar).pack(pady=5)
 
-entry_title = Entry(root, width=50)
-entry_title.pack(pady=5)
+Label(root, text="Apps cargadas").pack()
+listbox = Listbox(root, width=75)
+listbox.pack(pady=10, fill="both", expand=True)
 
-Button(root, text="Agregar / Actualizar APK", command=add_app).pack(pady=5)
-Button(root, text="Eliminar app", command=delete_app).pack(pady=5)
-Button(root, text="Guardar", command=lambda: save_json(push_to_github=True)).pack(pady=5)
-
-Label(root, text="Apps cargadas:").pack(pady=5)
-
-listbox = Listbox(root, width=70)
-listbox.pack(pady=5, fill="both", expand=True)
-
-refresh_listbox()
-<<<<<<< HEAD
-
-=======
->>>>>>> ca9a48ecb955d3926ee3cd51b00e4d0af9e06fd1
+refresh_list()
 root.mainloop()
