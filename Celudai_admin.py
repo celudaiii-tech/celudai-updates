@@ -8,7 +8,7 @@ from tkinter import *
 from tkinter import filedialog, messagebox
 
 # ---------------- CONFIG ----------------
-REPO_LOCAL = r"C:\Users\Diego\Desktop\CeludaiADMIN"
+REPO_LOCAL = r"C:\CeludaiBUILD"
 APK_FOLDER = os.path.join(REPO_LOCAL, "apks")
 JSON_FILE = os.path.join(REPO_LOCAL, "update.json")
 
