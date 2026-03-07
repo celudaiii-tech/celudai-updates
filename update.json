@@ -6,13 +6,6 @@
             "version": 8,
             "url": "apks/Epix_Play_3.7.6_final.apk",
             "added": "2026-03-06 20:44"
-        },
-        {
-            "name": "netfly",
-            "package": "xyz.netfly",
-            "version": 6,
-            "url": "apks/netfly.apk",
-            "added": "2026-03-06 20:45"
         }
     ],
     "activation_password": "1234567"
