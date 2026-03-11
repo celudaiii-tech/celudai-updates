@@ -1,4 +1,12 @@
 {
     "activation_password": "1",
-    "apps": []
+    "apps": [
+        {
+            "name": "Full.Tv.v.1.0.0_new_vip",
+            "package": "tiempos.crnipr",
+            "version": 1,
+            "url": "https://objects.githubusercontent.com/celudaiii-tech/celudai-updates/releases/download/untagged-24c9fd7ee0a6593d0e81/Full.Tv.v.1.0.0_new_vip.apk",
+            "added": "2026-03-11 17:56"
+        }
+    ]
 }
