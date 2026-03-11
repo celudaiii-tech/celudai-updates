@@ -1,0 +1,98 @@
+name: Auto Update JSON
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download APK
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          echo "Tag: $TAG"
+
+          # Extraer nombre y versión del tag
+          APP_NAME=$(echo "$TAG" | sed -E 's/_v[0-9]+$//')
+          VERSION=$(echo "$TAG" | sed -E 's/^.*_v([0-9]+)$/\1/')
+          echo "App: $APP_NAME, Version: $VERSION"
+
+          # Tomar URL del primer asset de la release
+          APK_URL="${{ github.event.release.assets[0].browser_download_url }}"
+          echo "URL: $APK_URL"
+
+          # Descargar APK temporalmente
+          curl -L -o "${APP_NAME}.apk" "$APK_URL"
+
+          # Extraer el package name usando un pequeño script Java
+          cat <<EOF > GetPackage.java
+          import net.dongliu.apk.parser.ApkFile;
+          import java.io.File;
+
+          public class GetPackage {
+              public static void main(String[] args) throws Exception {
+                  File apk = new File(args[0]);
+                  try (ApkFile apkFile = new ApkFile(apk)) {
+                      System.out.println(apkFile.getApkMeta().getPackageName());
+                  }
+              }
+          }
+          EOF
+
+          # Descargar dependencia ApkParser
+          mkdir -p libs
+          curl -L -o libs/apk-parser.jar https://github.com/hsiafan/apk-parser/releases/download/v2.6.10/apk-parser-2.6.10.jar
+
+          # Compilar y ejecutar el script
+          javac -cp libs/apk-parser.jar GetPackage.java
+          PACKAGE=$(java -cp ".:libs/apk-parser.jar" GetPackage "${APP_NAME}.apk")
+          echo "Package: $PACKAGE"
+
+          # Crear JSON si no existe
+          if [ ! -f update.json ]; then
+            echo '{ "apps": [] }' > update.json
+          fi
+
+          # Eliminar la app anterior si existe
+          jq --arg name "$APP_NAME" '.apps |= map(select(.name != $name))' update.json > tmp.json && mv tmp.json update.json
+
+          # Agregar la app nueva con package detectado automáticamente
+          jq --arg name "$APP_NAME" \
+             --arg package "$PACKAGE" \
+             --arg url "$APK_URL" \
+             --argjson version "$VERSION" \
+             '.apps += [{
+               name: $name,
+               package: $package,
+               version: $version,
+               url: $url
+             }]' update.json > tmp.json && mv tmp.json update.json
+
+      - name: Commit update.json
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add update.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto update JSON $TAG"
+            git push origin main

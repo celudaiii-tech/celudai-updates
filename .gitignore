@@ -1,0 +1,11 @@
+apks/
+*.apk
+build/
+dist/
+token.pickle
+token.json
+credentials.json
+service_account.json
+__pycache_/
+*.exe
+*.pkg
