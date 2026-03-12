@@ -2,6 +2,7 @@ apks/
 *.apk
 build/
 dist/
+github_token.txt
 token.pickle
 token.json
 credentials.json
@@ -9,3 +10,4 @@ service_account.json
 __pycache_/
 *.exe
 *.pkg
+*.spec
