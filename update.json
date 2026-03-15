@@ -1,4 +1,12 @@
 {
     "activation_password": "Celudai#2026!",
-    "apps": []
+    "apps": [
+        {
+            "name": "ZonaHack Nueva actualizaci\u00f3n_(apkdescargas.com)",
+            "package": "movil.app.zonahack",
+            "version": 282,
+            "url": "https://www.mediafire.com/file/zh11ljhnny9k1no/ZonaHack_Nueva_actualizaci%25C3%25B3n_%2528apkdescargas.com%2529.apk/file",
+            "added": "2026-03-15 18:35"
+        }
+    ]
 }
