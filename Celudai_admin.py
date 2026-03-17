@@ -40,7 +40,7 @@ def load_json():
 
 data = load_json()
 
-# ---------------- APK SIMPLE ----------------
+# ---------------- APK ----------------
 
 def read_apk():
 
@@ -109,6 +109,7 @@ def upload_apk(apk_path, package, version):
 
             if r.status_code in [200,201]:
 
+                # Publicar release
                 requests.patch(
                     f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/releases/{release['id']}",
                     headers=HEADERS,
@@ -116,7 +117,11 @@ def upload_apk(apk_path, package, version):
                     timeout=60
                 )
 
-                return r.json()["browser_download_url"]
+                # 🔥 URL DIRECTA REAL (FIX IMPORTANTE)
+                tag = release["tag_name"]
+                direct_url = f"https://github.com/{GITHUB_USER}/{GITHUB_REPO}/releases/download/{tag}/{filename}"
+
+                return direct_url
 
             else:
                 raise Exception(r.text)
@@ -174,9 +179,21 @@ def save():
 
     subprocess.call(["git","-C",REPO,"add","."])
     subprocess.call(["git","-C",REPO,"commit","-m","Update"])
-    subprocess.call(["git","-C",REPO,"push"])
 
-    messagebox.showinfo("OK","JSON subido")
+    # 🔥 CLAVE: sincronizar antes de push
+    pull = subprocess.call(["git","-C",REPO,"pull","--rebase"])
+
+    if pull != 0:
+        messagebox.showerror("Error","Falló git pull (posible conflicto)")
+        return
+
+    push = subprocess.call(["git","-C",REPO,"push"])
+
+    if push != 0:
+        messagebox.showerror("Error","Falló git push")
+        return
+
+    messagebox.showinfo("OK","JSON subido correctamente")
 
 def refresh():
     listbox.delete(0,END)
