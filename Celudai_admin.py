@@ -4,6 +4,7 @@ import requests
 import os
 import zipfile
 import time
+import threading
 from datetime import datetime
 from tkinter import *
 from tkinter import filedialog, messagebox
@@ -41,7 +42,7 @@ def load_json():
 
 data = load_json()
 
-# ---------------- LEER APK ----------------
+# ---------------- APK ----------------
 
 def read_apk():
 
@@ -73,26 +74,22 @@ def read_apk():
 
     return path,name,package,version,size
 
-# ---------------- CREAR RELEASE (DRAFT) ----------------
+# ---------------- GITHUB ----------------
 
 def create_release(package,version):
 
-    timestamp = int(time.time())
-
-    tag = f"app-{package}-{version}-{timestamp}"
-
-    release_data = {
-        "tag_name": tag,
-        "name": tag,
-        "body": "Celudai Store APK",
-        "draft": True,   # 🔥 clave
-        "prerelease": False
-    }
+    tag = f"app-{package}-{version}-{int(time.time())}"
 
     r = requests.post(
         f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/releases",
         headers=HEADERS,
-        json=release_data
+        json={
+            "tag_name": tag,
+            "name": tag,
+            "body": "Celudai Store APK",
+            "draft": True
+        },
+        timeout=60
     )
 
     release = r.json()
@@ -102,52 +99,64 @@ def create_release(package,version):
 
     return release
 
-# ---------------- SUBIR APK ----------------
-
 def upload_apk(apk_path, package, version):
 
     release = create_release(package,version)
-
     upload_url = release["upload_url"].split("{")[0]
 
     filename = package + ".apk"
 
-    filesize = os.path.getsize(apk_path)
-
-    headers = {
-        "Authorization": f"token {TOKEN}",
-        "Content-Type": "application/vnd.android.package-archive",
-        "Content-Length": str(filesize)
-    }
-
     progress_var.set("Subiendo APK...")
 
-    with open(apk_path,"rb") as f:
+    for intento in range(3):
 
-        r = requests.post(
-            upload_url + "?name=" + filename,
-            headers=headers,
-            data=f,
-            timeout=None
-        )
+        try:
+            with open(apk_path, "rb") as f:
 
-    if r.status_code not in [200,201]:
-        raise Exception(r.text)
+                def gen():
+                    while True:
+                        chunk = f.read(1024 * 1024)  # 1MB
+                        if not chunk:
+                            break
+                        yield chunk
 
-    # 🔥 PUBLICAR RELEASE (necesario para evitar immutable)
-    requests.patch(
-        f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/releases/{release['id']}",
-        headers=HEADERS,
-        json={"draft": False}
-    )
+                r = requests.post(
+                    upload_url + "?name=" + filename,
+                    headers={
+                        "Authorization": f"token {TOKEN}",
+                        "Content-Type": "application/vnd.android.package-archive"
+                    },
+                    data=gen(),
+                    timeout=300
+                )
 
-    asset = r.json()
+            if r.status_code in [200,201]:
 
-    progress_var.set("Subida finalizada")
+                # publicar release
+                requests.patch(
+                    f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/releases/{release['id']}",
+                    headers=HEADERS,
+                    json={"draft": False},
+                    timeout=60
+                )
 
-    return asset["browser_download_url"]
+                asset = r.json()
 
-# ---------------- AGREGAR APP ----------------
+                if "browser_download_url" not in asset:
+                    raise Exception("No se obtuvo URL de descarga")
+
+                return asset["browser_download_url"]
+
+            else:
+                raise Exception(r.text)
+
+        except Exception as e:
+            progress_var.set(f"Reintentando... ({intento+1}/3)")
+            time.sleep(3)
+
+    raise Exception("Falló la subida después de 3 intentos")
+
+# ---------------- APP ----------------
 
 def add_app():
 
@@ -160,7 +169,7 @@ def add_app():
     try:
         url = upload_apk(apk_path,package,version)
     except Exception as e:
-        messagebox.showerror("Error",str(e))
+        messagebox.showerror("Error subida",str(e))
         return
 
     existing = next((a for a in data["apps"] if a["package"] == package),None)
@@ -180,21 +189,19 @@ def add_app():
         })
 
     refresh()
+    messagebox.showinfo("OK","APK subido correctamente")
 
-# ---------------- ELIMINAR APP ----------------
+def add_app_thread():
+    threading.Thread(target=add_app).start()
 
 def delete_app():
 
     sel = listbox.curselection()
-
     if not sel:
         return
 
     data["apps"].pop(sel[0])
-
     refresh()
-
-# ---------------- GUARDAR ----------------
 
 def save():
 
@@ -204,12 +211,10 @@ def save():
         json.dump(data,f,indent=4)
 
     subprocess.call(["git","-C",REPO,"add","."])
-    subprocess.call(["git","-C",REPO,"commit","-m","Update Celudai apps"])
+    subprocess.call(["git","-C",REPO,"commit","-m","Update"])
     subprocess.call(["git","-C",REPO,"push"])
 
     messagebox.showinfo("OK","Update.json subido")
-
-# ---------------- REFRESH ----------------
 
 def refresh():
 
@@ -218,30 +223,30 @@ def refresh():
     for app in data["apps"]:
         listbox.insert(
             END,
-            f"{app['name']} | {app['package']} | v{app['version']} | {app.get('size','?')} MB"
+            f"{app['name']} | {app['package']} | v{app['version']}"
         )
 
 # ---------------- UI ----------------
 
 root = Tk()
-root.title("Celudai Store Admin")
-root.geometry("720x540")
+root.title("Celudai Admin")
+root.geometry("700x520")
 
-Label(root,text="Contraseña de activación").pack()
+Label(root,text="Password").pack()
 
 password_entry = Entry(root,width=40)
 password_entry.pack()
 password_entry.insert(0,data["activation_password"])
 
-Button(root,text="Agregar APK",command=add_app).pack(pady=8)
-Button(root,text="Eliminar App",command=delete_app).pack()
-Button(root,text="Guardar y Subir",command=save).pack(pady=10)
+Button(root,text="Agregar APK",command=add_app_thread).pack(pady=8)
+Button(root,text="Eliminar",command=delete_app).pack()
+Button(root,text="Guardar",command=save).pack(pady=10)
 
 progress_var = StringVar()
 Label(root,textvariable=progress_var).pack()
 
-listbox = Listbox(root,width=110)
-listbox.pack(fill="both",expand=True,pady=10)
+listbox = Listbox(root,width=100)
+listbox.pack(fill="both",expand=True)
 
 refresh()
 
