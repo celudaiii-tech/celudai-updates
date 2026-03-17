@@ -1,4 +1,13 @@
 {
     "activation_password": "Celudai#2026!",
-    "apps": []
+    "apps": [
+        {
+            "name": "Full.Tv.v.1.0.0_new_vip",
+            "package": "full.tv.v.1.0.0_new_vip",
+            "version": 1,
+            "size": 44.06,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/untagged-937bf0aeb4da11e5d9a6/full.tv.v.1.0.0_new_vip.apk",
+            "added": "2026-03-17 19:20"
+        }
+    ]
 }
