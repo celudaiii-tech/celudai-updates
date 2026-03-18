@@ -16,6 +16,14 @@
             "size": 37.6,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/eros.tv-3.0.8_11-3-1-1773859547/eros.tv-3.0.8_11-3.apk",
             "added": "2026-03-18 15:47"
+        },
+        {
+            "name": "eventos.deportivos",
+            "package": "eventos.deportivos",
+            "version": 1,
+            "size": 25.23,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/eventos.deportivos-1-1773859643/eventos.deportivos.apk",
+            "added": "2026-03-18 15:48"
         }
     ]
 }
