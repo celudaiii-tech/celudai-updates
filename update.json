@@ -1,4 +1,13 @@
 {
     "activation_password": "1234",
-    "apps": []
+    "apps": [
+        {
+            "name": "com-esaba-downloader-52-66275629-2108599e2b1c6a7db92119b3d839a2c7",
+            "package": "com-esaba-downloader-52-66275629-2108599e2b1c6a7db92119b3d839a2c7",
+            "version": 1,
+            "size": 5.17,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/com-esaba-downloader-52-66275629-2108599e2b1c6a7db92119b3d839a2c7-1-1773859515/com-esaba-downloader-52-66275629-2108599e2b1c6a7db92119b3d839a2c7.apk",
+            "added": "2026-03-18 15:45"
+        }
+    ]
 }
