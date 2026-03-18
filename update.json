@@ -32,6 +32,22 @@
             "size": 12.18,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/film.app_.apkdescargas.com-1-1773859726/film.app_.apkdescargas.com.apk",
             "added": "2026-03-18 15:49"
+        },
+        {
+            "name": "fox.iptv.premium-26.3.3_6-3",
+            "package": "fox.iptv.premium-26.3.3_6-3",
+            "version": 1,
+            "size": 25.04,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/fox.iptv.premium-26.3.3_6-3-1-1773859776/fox.iptv.premium-26.3.3_6-3.apk",
+            "added": "2026-03-18 15:50"
+        },
+        {
+            "name": "free.1",
+            "package": "free.1",
+            "version": 1,
+            "size": 25.94,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/free.1-1-1773859840/free.1.apk",
+            "added": "2026-03-18 15:51"
         }
     ]
 }
