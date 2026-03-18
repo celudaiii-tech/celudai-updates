@@ -96,6 +96,14 @@
             "size": 7.96,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/tv.clasica.nueva.actualizaci.n_-1-1773860459/tv.clasica.nueva.actualizaci.n_.apk",
             "added": "2026-03-18 16:01"
+        },
+        {
+            "name": "tv-box.3",
+            "package": "tv-box.3",
+            "version": 1,
+            "size": 35.63,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/tv-box.3-1-1773860524/tv-box.3.apk",
+            "added": "2026-03-18 16:03"
         }
     ]
 }
