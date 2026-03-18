@@ -3,6 +3,7 @@ import subprocess
 import requests
 import os
 import time
+import re
 from datetime import datetime
 from tkinter import *
 from tkinter import filedialog, messagebox
@@ -25,6 +26,15 @@ HEADERS = {
     "Authorization": f"token {TOKEN}",
     "Accept": "application/vnd.github+json"
 }
+
+# ---------------- CLEAN NAME (FIX 404) ----------------
+
+def clean_name(name):
+    name = name.lower()
+    name = name.replace(" ", ".")
+    name = re.sub(r'[^a-z0-9._-]', '.', name)
+    name = re.sub(r'\.+', '.', name)
+    return name.strip(".")
 
 # ---------------- JSON ----------------
 
@@ -49,9 +59,11 @@ def read_apk():
         return None
 
     size = round(os.path.getsize(path)/1024/1024,2)
-    name = os.path.basename(path).replace(".apk","")
 
-    package = name.lower().replace(" ",".")
+    raw_name = os.path.basename(path).replace(".apk","")
+    name = clean_name(raw_name)
+
+    package = name
 
     existing = next((a for a in data["apps"] if a["package"] == package),None)
     version = existing["version"] + 1 if existing else 1
@@ -87,7 +99,7 @@ def upload_apk(apk_path, package, version):
     release = create_release(package,version)
     upload_url = release["upload_url"].split("{")[0]
 
-    filename = package + ".apk"
+    filename = clean_name(package) + ".apk"
 
     progress_var.set("Subiendo APK...")
     root.update()
@@ -117,7 +129,7 @@ def upload_apk(apk_path, package, version):
                     timeout=60
                 )
 
-                # 🔥 URL DIRECTA REAL (FIX IMPORTANTE)
+                # 🔥 URL DIRECTA CORRECTA
                 tag = release["tag_name"]
                 direct_url = f"https://github.com/{GITHUB_USER}/{GITHUB_REPO}/releases/download/{tag}/{filename}"
 
@@ -180,15 +192,12 @@ def save():
     subprocess.call(["git","-C",REPO,"add","."])
     subprocess.call(["git","-C",REPO,"commit","-m","Update"])
 
-    # 🔥 CLAVE: sincronizar antes de push
     pull = subprocess.call(["git","-C",REPO,"pull","--rebase"])
-
     if pull != 0:
-        messagebox.showerror("Error","Falló git pull (posible conflicto)")
+        messagebox.showerror("Error","Falló git pull (conflicto)")
         return
 
     push = subprocess.call(["git","-C",REPO,"push"])
-
     if push != 0:
         messagebox.showerror("Error","Falló git push")
         return
