@@ -128,6 +128,14 @@
             "size": 5.43,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/m._plus_2.1-1-1773889693/m._plus_2.1.apk",
             "added": "2026-03-19 00:08"
+        },
+        {
+            "name": "streamflix-v1.7.101-only-tv",
+            "package": "streamflix-v1.7.101-only-tv",
+            "version": 1,
+            "size": 14.33,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/streamflix-v1.7.101-only-tv-1-1773893574/streamflix-v1.7.101-only-tv.apk",
+            "added": "2026-03-19 01:13"
         }
     ]
 }
