@@ -120,6 +120,14 @@
             "size": 31.53,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/xuper_4.99.2_tv-1-1773864758/xuper_4.99.2_tv.apk",
             "added": "2026-03-18 17:13"
+        },
+        {
+            "name": "m._plus_2.1",
+            "package": "m._plus_2.1",
+            "version": 1,
+            "size": 5.43,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/m._plus_2.1-1-1773889693/m._plus_2.1.apk",
+            "added": "2026-03-19 00:08"
         }
     ]
 }
