@@ -26,14 +26,6 @@
             "added": "2026-03-18 15:48"
         },
         {
-            "name": "fox.iptv.premium-26.3.3_6-3",
-            "package": "fox.iptv.premium-26.3.3_6-3",
-            "version": 1,
-            "size": 25.04,
-            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/fox.iptv.premium-26.3.3_6-3-1-1773859776/fox.iptv.premium-26.3.3_6-3.apk",
-            "added": "2026-03-18 15:50"
-        },
-        {
             "name": "iptv.smarters.pro.nueva.actualizaci.n_.-1",
             "package": "iptv.smarters.pro.nueva.actualizaci.n_.-1",
             "version": 1,
@@ -186,14 +178,6 @@
             "added": "2026-04-06 00:48"
         },
         {
-            "name": "xtreme.iptv_.apkdescargas.com",
-            "package": "xtreme.iptv_.apkdescargas.com",
-            "version": 1,
-            "size": 89.08,
-            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/xtreme.iptv_.apkdescargas.com-1-1775447363/xtreme.iptv_.apkdescargas.com.apk",
-            "added": "2026-04-06 00:52"
-        },
-        {
             "name": "shark.tv.-3.1_27-3",
             "package": "shark.tv.-3.1_27-3",
             "version": 1,
@@ -240,6 +224,14 @@
             "size": 49.85,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/reproductor.vu.iptv-1.0.3_29-3.2-1-1776226575/reproductor.vu.iptv-1.0.3_29-3.2.apk",
             "added": "2026-04-15 01:17"
+        },
+        {
+            "name": "tele.latino.play_.apkdescargas.com.-1",
+            "package": "tele.latino.play_.apkdescargas.com.-1",
+            "version": 1,
+            "size": 52.28,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/tele.latino.play_.apkdescargas.com.-1-1-1776227175/tele.latino.play_.apkdescargas.com.-1.apk",
+            "added": "2026-04-15 01:27"
         }
     ]
 }
