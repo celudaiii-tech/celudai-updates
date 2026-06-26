@@ -272,6 +272,14 @@
             "size": 34.29,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/xuper.hydra.hdr.4kp-1-1782416198/xuper.hydra.hdr.4kp.apk",
             "added": "2026-06-25 16:38"
+        },
+        {
+            "name": "cuervo.vpn.hydra",
+            "package": "cuervo.vpn.hydra",
+            "version": 1,
+            "size": 78.79,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/cuervo.vpn.hydra-1-1782437825/cuervo.vpn.hydra.apk",
+            "added": "2026-06-25 22:41"
         }
     ]
 }
