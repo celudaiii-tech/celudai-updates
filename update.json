@@ -304,6 +304,14 @@
             "size": 35.63,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/mxl.tv_3.2.5-tvbox-1-1783352197/mxl.tv_3.2.5-tvbox.apk",
             "added": "2026-07-06 12:37"
+        },
+        {
+            "name": "netxxus.go.movil",
+            "package": "netxxus.go.movil",
+            "version": 1,
+            "size": 35.5,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/netxxus.go.movil-1-1783352760/netxxus.go.movil.apk",
+            "added": "2026-07-06 12:47"
         }
     ]
 }
