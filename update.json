@@ -300,14 +300,6 @@
         {
             "name": "netxxus.proxy.timer",
             "package": "netxxus.proxy.timer",
-            "version": 1,
-            "size": 43.54,
-            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/netxxus.proxy.timer-1-1782848591/netxxus.proxy.timer.apk",
-            "added": "2026-06-30 16:44"
-        },
-        {
-            "name": "netxxus.proxy.timer",
-            "package": "netxxus.proxy.timer",
             "version": 2,
             "size": 43.54,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/netxxus.proxy.timer-2-1782849001/netxxus.proxy.timer.apk",
