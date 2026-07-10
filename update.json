@@ -336,6 +336,14 @@
             "size": 34.49,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/xupertv-n0f4c3-v6.72.0-1-1783643966/xupertv-n0f4c3-v6.72.0.apk",
             "added": "2026-07-09 21:40"
+        },
+        {
+            "name": "film_plus",
+            "package": "film_plus",
+            "version": 1,
+            "size": 7.26,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/film_plus-1-1783648531/film_plus.apk",
+            "added": "2026-07-09 22:56"
         }
     ]
 }
