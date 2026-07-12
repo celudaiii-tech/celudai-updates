@@ -352,6 +352,14 @@
             "size": 12.78,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/film.app_5.0.4-1-1783867856/film.app_5.0.4.apk",
             "added": "2026-07-12 11:51"
+        },
+        {
+            "name": "teleapp_9.8",
+            "package": "teleapp_9.8",
+            "version": 1,
+            "size": 31.33,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/teleapp_9.8-1-1783868640/teleapp_9.8.apk",
+            "added": "2026-07-12 12:05"
         }
     ]
 }
