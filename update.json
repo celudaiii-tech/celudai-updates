@@ -376,6 +376,14 @@
             "size": 50.12,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/gnulatvplus-3.1.0-modbynf-1-1786383165/gnulatvplus-3.1.0-modbynf.apk",
             "added": "2026-08-10 14:34"
+        },
+        {
+            "name": "tv",
+            "package": "tv",
+            "version": 1,
+            "size": 11.72,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/tv-1-1786383290/tv.apk",
+            "added": "2026-08-10 14:35"
         }
     ]
 }
