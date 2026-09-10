@@ -408,6 +408,14 @@
             "size": 5.05,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/codextv-1-1789044323/codextv.apk",
             "added": "2026-09-10 09:45"
+        },
+        {
+            "name": "playtv.pro_1.0",
+            "package": "playtv.pro_1.0",
+            "version": 1,
+            "size": 21.58,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/playtv.pro_1.0-1-1789044389/playtv.pro_1.0.apk",
+            "added": "2026-09-10 09:47"
         }
     ]
 }
