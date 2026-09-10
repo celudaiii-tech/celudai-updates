@@ -400,6 +400,14 @@
             "size": 27.31,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/xuperamigonlytv.-.v1.0.8-tv-new-1-1787679682/xuperamigonlytv.-.v1.0.8-tv-new.apk",
             "added": "2026-08-25 14:44"
+        },
+        {
+            "name": "codextv",
+            "package": "codextv",
+            "version": 1,
+            "size": 5.05,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/codextv-1-1789044323/codextv.apk",
+            "added": "2026-09-10 09:45"
         }
     ]
 }
