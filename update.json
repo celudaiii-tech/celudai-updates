@@ -360,6 +360,14 @@
             "size": 21.58,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/playtv.pro_1.0-1-1789044389/playtv.pro_1.0.apk",
             "added": "2026-09-10 09:47"
+        },
+        {
+            "name": "femon.plus",
+            "package": "femon.plus",
+            "version": 1,
+            "size": 35.78,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/femon.plus-1-1789413468/femon.plus.apk",
+            "added": "2026-09-14 16:20"
         }
     ]
 }
