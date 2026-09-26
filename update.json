@@ -424,6 +424,14 @@
             "size": 95.42,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/nova-1-1790404202/nova.apk",
             "added": "2026-09-26 03:33"
+        },
+        {
+            "name": "vegeta.tv_v10.1",
+            "package": "vegeta.tv_v10.1",
+            "version": 1,
+            "size": 11.73,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/vegeta.tv_v10.1-1-1790404680/vegeta.tv_v10.1.apk",
+            "added": "2026-09-26 03:38"
         }
     ]
 }
