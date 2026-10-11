@@ -496,6 +496,14 @@
             "size": 20.26,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/rblive77-1-1791754242/rblive77.apk",
             "added": "2026-10-11 18:32"
+        },
+        {
+            "name": "z.pertv",
+            "package": "z.pertv",
+            "version": 1,
+            "size": 25.42,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/z.pertv-1-1791754372/z.pertv.apk",
+            "added": "2026-10-11 18:35"
         }
     ]
 }
