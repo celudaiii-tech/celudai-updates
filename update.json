@@ -426,14 +426,6 @@
             "added": "2026-09-26 03:38"
         },
         {
-            "name": "zuper",
-            "package": "zuper",
-            "version": 1,
-            "size": 29.96,
-            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/zuper-1-1790404731/zuper.apk",
-            "added": "2026-09-26 03:40"
-        },
-        {
             "name": "xuperarv3bynetxxus",
             "package": "xuperarv3bynetxxus",
             "version": 1,
@@ -456,6 +448,14 @@
             "size": 32.64,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/xupertv-n0f4c3-v4.35.0-oficial-modbynf-1-1790637486/xupertv-n0f4c3-v4.35.0-oficial-modbynf.apk",
             "added": "2026-09-28 20:21"
+        },
+        {
+            "name": "femon.arg.v12.0",
+            "package": "femon.arg.v12.0",
+            "version": 1,
+            "size": 5.55,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/femon.arg.v12.0-1-1791753322/femon.arg.v12.0.apk",
+            "added": "2026-10-11 18:15"
         }
     ]
 }
