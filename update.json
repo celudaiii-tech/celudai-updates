@@ -504,6 +504,38 @@
             "size": 25.42,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/z.pertv-1-1791754372/z.pertv.apk",
             "added": "2026-10-11 18:35"
+        },
+        {
+            "name": "netxxus",
+            "package": "netxxus",
+            "version": 1,
+            "size": 44.87,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/netxxus-1-1793728717/netxxus.apk",
+            "added": "2026-11-03 14:59"
+        },
+        {
+            "name": "movieplus-16.9-vip-modbynf",
+            "package": "movieplus-16.9-vip-modbynf",
+            "version": 1,
+            "size": 130.92,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/movieplus-16.9-vip-modbynf-1-1793728815/movieplus-16.9-vip-modbynf.apk",
+            "added": "2026-11-03 15:02"
+        },
+        {
+            "name": "kawaiianimes-2.1.3-vip-modbynf-",
+            "package": "kawaiianimes-2.1.3-vip-modbynf-",
+            "version": 1,
+            "size": 64.13,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/kawaiianimes-2.1.3-vip-modbynf--1-1793728975/kawaiianimes-2.1.3-vip-modbynf-.apk",
+            "added": "2026-11-03 15:04"
+        },
+        {
+            "name": "goplustv-vip-4.1.0-modbynf-",
+            "package": "goplustv-vip-4.1.0-modbynf-",
+            "version": 1,
+            "size": 52.86,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/goplustv-vip-4.1.0-modbynf--1-1793729053/goplustv-vip-4.1.0-modbynf-.apk",
+            "added": "2026-11-03 15:05"
         }
     ]
 }
