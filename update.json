@@ -568,6 +568,14 @@
             "size": 33.83,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/retrotoons-tv--1-1795630613/retrotoons-tv-.apk",
             "added": "2026-11-25 15:17"
+        },
+        {
+            "name": "xtreme",
+            "package": "xtreme",
+            "version": 1,
+            "size": 5.52,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/xtreme-1-1795630693/xtreme.apk",
+            "added": "2026-11-25 15:18"
         }
     ]
 }
