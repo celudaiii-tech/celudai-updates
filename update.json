@@ -34,14 +34,6 @@
             "added": "2026-04-02 01:59"
         },
         {
-            "name": "chocopop.tv.cevitech.v.9.8",
-            "package": "chocopop.tv.cevitech.v.9.8",
-            "version": 1,
-            "size": 31.25,
-            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/chocopop.tv.cevitech.v.9.8-1-1776610969/chocopop.tv.cevitech.v.9.8.apk",
-            "added": "2026-04-19 12:03"
-        },
-        {
             "name": "calero_9.8",
             "package": "calero_9.8",
             "version": 1,
@@ -536,6 +528,14 @@
             "size": 48.99,
             "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/xupertv-nf-v4.35.1-modbynf-1-1794760268/xupertv-nf-v4.35.1-modbynf.apk",
             "added": "2026-11-15 13:37"
+        },
+        {
+            "name": "chocopop-v5.21",
+            "package": "chocopop-v5.21",
+            "version": 1,
+            "size": 48.75,
+            "url": "https://github.com/celudaiii-tech/celudai-updates/releases/download/chocopop-v5.21-1-1795630209/chocopop-v5.21.apk",
+            "added": "2026-11-25 15:11"
         }
     ]
 }
